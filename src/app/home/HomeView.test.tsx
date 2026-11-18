@@ -9,6 +9,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import HomeView from "./HomeView";
 
 const fixtures = vi.hoisted(() => ({
+  userName: "",
   decks: [
     {
       id: "spanish",
@@ -41,7 +42,7 @@ vi.mock("@/logic/deck/hooks/useTopLevelDecks", () => ({
   useTopLevelDecks: () => [fixtures.decks, true],
 }));
 vi.mock("@/logic/settings/hooks/useSetting", () => ({
-  useSetting: () => ["", true],
+  useSetting: () => [fixtures.userName, true],
 }));
 vi.mock("@/logic/card/getCardsOf", () => ({ getCardsOf: vi.fn() }));
 vi.mock("dexie-react-hooks", async () => {
@@ -59,7 +60,26 @@ vi.mock("dexie-react-hooks", async () => {
 vi.mock("../deck/DeckModal", () => ({ default: () => null }));
 vi.mock("../deck/DeckTable", () => ({ default: () => <div>All decks</div> }));
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  fixtures.userName = "";
+});
+
+it("shows a single personalized welcome line", () => {
+  fixtures.userName = "Eli";
+  vi.mocked(getCardsOf).mockResolvedValue([]);
+  render(
+    <MemoryRouter>
+      <HomeView />
+    </MemoryRouter>
+  );
+  expect(
+    screen.getByRole("heading", { name: "Welcome back, Eli!", level: 1 })
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByText("Ready to start studying?")
+  ).not.toBeInTheDocument();
+});
 
 it("shows real ready counts in order and starts the chosen deck", async () => {
   const card = { ...createCardSkeleton(), note: "note" };

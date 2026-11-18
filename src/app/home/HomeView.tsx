@@ -74,9 +74,6 @@ export default function HomeView() {
               ? t("home.welcome-user", { name: userName })
               : t("home.welcome")}
           </h1>
-          <sub className={`${BASE}__welcome-subtitle`}>
-            {t("home.welcome-subtitle")}
-          </sub>
         </section>
         {timeline && timeline.length > 0 && (
           <section

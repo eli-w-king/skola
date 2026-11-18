@@ -25,17 +25,11 @@
 }
 
 .home-view__welcome-title {
-  font-size: var(--font-size-xl);
-  font-family: var(--font-serif);
-  font-weight: 500;
-  color: var(--theme-neutral-900);
-  margin: 0;
-}
-
-.home-view__welcome-subtitle {
   font-size: var(--font-size-md);
+  font-weight: 500;
   color: var(--theme-neutral-700);
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .home-view__timeline-section {
@@ -140,14 +134,6 @@
   .home-view__welcome-section {
     padding: var(--spacing-2xl);
     margin-bottom: var(--spacing-2xl);
-  }
-
-  .home-view__welcome-title {
-    font-size: var(--font-size-xl);
-  }
-
-  .home-view__welcome-subtitle {
-    font-size: var(--font-size-md);
   }
 
   .home-view__stop-card {
