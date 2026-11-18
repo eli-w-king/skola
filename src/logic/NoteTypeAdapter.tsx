@@ -35,6 +35,12 @@ export interface NoteTypeAdapter<T extends NoteType> {
     place?: "learn" | "notebook"
   ): ReactNode;
 
+  getStudySpeechHtml?(
+    card: Card<T>,
+    content: NoteContent<T>,
+    showingAnswer: boolean
+  ): string | undefined;
+
   /**
    * Displays the contents of a note.
    *

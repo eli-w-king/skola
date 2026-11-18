@@ -91,6 +91,11 @@
     "welcome-user": "Bem-vindo de volta, {{name}}!"
   },
   "learning": {
+    "listen": "Ouvir",
+    "listen-stop": "Parar leitura",
+    "listen-no-local-voice": "Nenhuma voz local disponível.",
+    "listen-no-text": "Não há texto para ler neste lado.",
+    "listen-failed": "Não foi possível ler em voz alta. Tente novamente.",
     "finished-accuracy-ratio": "Precisão",
     "finished-button-home": "Ir para o Início",
     "finished-button-to-deck": "Voltar para o Deck",

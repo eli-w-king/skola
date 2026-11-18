@@ -13,19 +13,29 @@ import {
 import createDoubleSidedNote from "./createDoubleSidedNote";
 import { updateDoubleSidedNote } from "./updateDoubleSidedNote";
 
+function doubleSidedStudyFace(
+  card: Card<NoteType.DoubleSided>,
+  content: NoteContent<NoteType.DoubleSided> | undefined,
+  showingAnswer: boolean
+) {
+  return card.content.frontIsField1 !== showingAnswer
+    ? content?.field1
+    : content?.field2;
+}
+
 export const DoubleSidedNoteTypeAdapter: NoteTypeAdapter<NoteType.DoubleSided> =
   {
     createNote: createDoubleSidedNote,
 
     updateNote: updateDoubleSidedNote,
 
+    getStudySpeechHtml: doubleSidedStudyFace,
+
     displayQuestion(
       card: Card<NoteType.DoubleSided>,
       content?: NoteContent<NoteType.DoubleSided>
     ) {
-      const frontHtml = card.content.frontIsField1
-        ? content?.field1
-        : content?.field2;
+      const frontHtml = doubleSidedStudyFace(card, content, false);
       return <QuestionOnly html={frontHtml ?? "error"} />;
     },
 
@@ -34,12 +44,8 @@ export const DoubleSidedNoteTypeAdapter: NoteTypeAdapter<NoteType.DoubleSided> =
       content?: NoteContent<NoteType.DoubleSided>,
       _place?: "learn" | "notebook"
     ) {
-      const frontHtml = card.content.frontIsField1
-        ? content?.field1
-        : content?.field2;
-      const backHtml = card.content.frontIsField1
-        ? content?.field2
-        : content?.field1;
+      const frontHtml = doubleSidedStudyFace(card, content, false);
+      const backHtml = doubleSidedStudyFace(card, content, true);
       return (
         <QuestionWithAnswer
           questionHtml={frontHtml ?? "error"}

@@ -61,7 +61,7 @@ function NewNotesView() {
           focusSelectNoteType,
         })
       : null;
-  }, [deck, noteType, setNoteType, focusSelectNoteType]);
+  }, [deck, noteType, requestedFinish, setNoteType, focusSelectNoteType]);
 
   if (isReady && !deck) {
     return <NotFound />;

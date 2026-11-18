@@ -17,7 +17,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AppHeaderContent } from "../shell/Header/Header";
 import AboutSettingsView from "./AboutSettingsView";
 import AppearanceSettingsView from "./AppearanceSettingsView";
-import CloudSettingsView from "./CloudSettingsView";
 import DatabaseSettingsView from "./DatabaseSettingsView/DatabaseSettingsView";
 import EditingSettingsView from "./EditingSettingsView/EditingSettingsView";
 import GeneralSettingsView from "./GeneralSettingsView";
@@ -107,7 +106,12 @@ export default function SettingsView() {
           <DatabaseSettingsView />
         </Tabs.Panel>
         <Tabs.Panel value="cloud">
-          <CloudSettingsView />
+          <p>
+            {t(
+              "settings.cloud.localOnly",
+              "Cloud sync is off in this build. Your flashcards are stored in this browser on this device."
+            )}
+          </p>
         </Tabs.Panel>
         <Tabs.Panel value="about">
           <AboutSettingsView />

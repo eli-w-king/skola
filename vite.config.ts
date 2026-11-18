@@ -8,8 +8,21 @@ import viteTsconfigPaths from "vite-tsconfig-paths";
 
 const pkg = JSON.parse(fs.readFileSync("./package.json", "utf-8"));
 
+function localContentPolicy(dev: boolean) {
+  return [
+    "default-src 'self'",
+    `script-src 'self'${dev ? " 'unsafe-inline'" : ""}`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob:",
+    "media-src 'self' data: blob:",
+    "object-src 'none'",
+    "base-uri 'none'",
+    "form-action 'none'",
+  ].join("; ");
+}
+
 export default defineConfig({
-  base: "/",
+  base: "./",
   css: {
     modules: {},
   },
@@ -24,6 +37,15 @@ export default defineConfig({
     },
   },
   plugins: [
+    {
+      name: "local-content-policy",
+      transformIndexHtml(html, { server }) {
+        return html.replace(
+          "<head>",
+          `<head>\n    <meta http-equiv="Content-Security-Policy" content="${localContentPolicy(Boolean(server))}">`
+        );
+      },
+    },
     react({
       babel: {
         plugins: ["babel-plugin-react-compiler"],
@@ -42,7 +64,8 @@ export default defineConfig({
         background_color: "#ffffff",
         display: "fullscreen",
         orientation: "portrait-primary",
-        start_url: "/",
+        start_url: "./",
+        scope: "./",
         icons: [
           {
             src: "logo256.png",
@@ -65,36 +88,6 @@ export default defineConfig({
       workbox: {
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "google-fonts-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-          {
-            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-            handler: "CacheFirst",
-            options: {
-              cacheName: "gstatic-fonts-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
       },
     }),
   ],
