@@ -17,6 +17,7 @@ const MINUTE_IN_MILLISECONDS = 1000 * 60;
 interface LearnViewFooterProps {
   controller: LearnController;
   answer: Function;
+  inline: boolean;
 }
 
 function timeStringForRating(rating: Rating, controller: LearnController) {
@@ -45,7 +46,7 @@ function timeStringForRating(rating: Rating, controller: LearnController) {
   }
 }
 
-function LearnViewFooter({ controller, answer }: LearnViewFooterProps) {
+function LearnViewFooter({ controller, answer, inline }: LearnViewFooterProps) {
   const [enableHardAndEasy] = useSetting("#learn_enableHardAndEasy");
 
   const baseHotkeys: [string, () => void][] = [
@@ -79,7 +80,10 @@ function LearnViewFooter({ controller, answer }: LearnViewFooterProps) {
   );
 
   return (
-    <Group className={BASE} justify="center">
+    <Group
+      className={inline ? `${BASE} ${BASE}--inline` : BASE}
+      justify="center"
+    >
       {controller.showingAnswer ? (
         <div className={BASE + "__buttons"}>
           <AnswerCardButton

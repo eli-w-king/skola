@@ -15,8 +15,10 @@ import CognitivePromptConnector from "./CognitivePromptConnector";
 import "./LearnView.css";
 import LearnViewFooter from "./LearnViewFooter";
 import LearnViewHeader, { stopwatchResult } from "./LearnViewHeader";
+import ListenButton from "./ListenButton";
 import QuickAddNote from "./QuickAddNote";
 import VisualFeedback from "./VisualFeedback";
+import { getStudySpeechText } from "./getStudySpeechText";
 import { useLearnSession } from "./useLearnSession";
 
 const BASE = "learn-view";
@@ -43,7 +45,17 @@ function LearnView() {
     newToReviewRatio,
   });
 
-  const cardContent = useNote(controller.currentCard?.note ?? "")?.content;
+  const card = controller.currentCard;
+  const note = useNote(card?.note ?? "");
+  const cardContent = note?.id === card?.note ? note?.content : undefined;
+  const inlineRatings = controller.showingAnswer;
+  const controls = (
+    <LearnViewFooter
+      controller={controller}
+      answer={answerCard}
+      inline={inlineRatings}
+    />
+  );
 
   const [debouncedFinish] = useDebouncedValue(controller.isFinished, 50);
 
@@ -70,7 +82,9 @@ function LearnView() {
 
       <div className={`${BASE}__wrapper`}>
         {useVisualFeedback && <VisualFeedback rating={currentRating} />}
-        <div className={`${BASE}__card-container`}>
+        <div
+          className={`${BASE}__card-container${inlineRatings ? ` ${BASE}__card-container--inline-ratings` : ""}`}
+        >
           <div className={`${BASE}__card-stack`}>
             <LearnViewCurrentCardStateIndicator
               currentCardModel={controller.currentCard?.model}
@@ -89,6 +103,21 @@ function LearnView() {
                   cardContent
                 )}
             </Paper>
+            {card && !controller.isFinished && (
+              <ListenButton
+                key={`${card.id}:${controller.showingAnswer}`}
+                text={
+                  cardContent
+                    ? getStudySpeechText(
+                        card,
+                        cardContent,
+                        controller.showingAnswer
+                      )
+                    : ""
+                }
+              />
+            )}
+            {inlineRatings && controls}
             {showCognitivePrompts && controller.showingAnswer && (
               <>
                 {showPrompts && (
@@ -111,7 +140,7 @@ function LearnView() {
             )}
           </div>
         </div>
-        <LearnViewFooter controller={controller} answer={answerCard} />
+        {!inlineRatings && controls}
 
         {debouncedFinish && (
           <Modal

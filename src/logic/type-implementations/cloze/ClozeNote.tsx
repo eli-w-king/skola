@@ -22,6 +22,18 @@ import { ClozeNoteContent } from "./types";
 
 const BASE = "cloze-note";
 
+function mapClozeFields(
+  text: string,
+  activeNumber: number | undefined,
+  render: (value: string, active: boolean) => string
+) {
+  return text.replace(
+    /\{\{c(\d+)::((?:(?!\{\{|}})[\s\S])*)}}/g,
+    (_, number: string, value: string) =>
+      render(value, number === String(activeNumber))
+  );
+}
+
 export const ClozeNoteTypeAdapter: NoteTypeAdapter<NoteType.Cloze> = {
   createNote(
     params: { text: string; occlusionNumberSet: number[] },
@@ -69,6 +81,16 @@ export const ClozeNoteTypeAdapter: NoteTypeAdapter<NoteType.Cloze> = {
         text: params.text,
       });
     });
+  },
+
+  getStudySpeechHtml(card, content, showingAnswer) {
+    const html = mapClozeFields(
+      content.text,
+      card.content.occlusionNumber,
+      (value, active) => (active && !showingAnswer ? " " : value)
+    );
+    // Do not speak cloze markup we could not parse safely.
+    return /\{\{c\d+::/.test(html) ? undefined : html;
   },
 
   displayQuestion(
@@ -172,27 +194,11 @@ const ClozeComponent = memo(
     allAreVisible?: boolean;
     content?: NoteContent<NoteType.Cloze>;
   }) => {
-    let finalText = content?.text ?? "";
-    if (activeCard) {
-      finalText = finalText.replace(
-        new RegExp(
-          `{{c${activeCard.content.occlusionNumber}::((?!{{|}}).)*}}`,
-          "g"
-        ),
-        (match) =>
-          `<span class="interactive-cloze-field-replace active">${match.slice(
-            6,
-            -2
-          )}</span>`
-      );
-    }
-    finalText = finalText.replace(
-      /\{\{c\d::((?!\{\{|}}).)*\}\}/g,
-      (match) =>
-        `<span class="interactive-cloze-field-replace">${match.slice(
-          6,
-          -2
-        )}</span>`
+    const finalText = mapClozeFields(
+      content?.text ?? "",
+      activeCard?.content.occlusionNumber,
+      (value, active) =>
+        `<span class="interactive-cloze-field-replace${active ? " active" : ""}">${value}</span>`
     );
 
     const options: HTMLReactParserOptions = {

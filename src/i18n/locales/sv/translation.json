@@ -69,6 +69,11 @@
     "welcome-user": "Välkommen tillbaka, {{name}}!"
   },
   "learning": {
+    "listen": "Lyssna",
+    "listen-stop": "Stoppa uppläsning",
+    "listen-no-local-voice": "Ingen lokal röst tillgänglig.",
+    "listen-no-text": "Det finns ingen text att läsa upp på den här sidan.",
+    "listen-failed": "Det gick inte att läsa upp texten. Försök igen.",
     "cognitive-prompts": {
       "invert": {
         "label": "Invertera",

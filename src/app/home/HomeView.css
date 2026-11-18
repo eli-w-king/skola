@@ -38,6 +38,104 @@
   margin: 0;
 }
 
+.home-view__timeline-section {
+  margin-bottom: var(--spacing-3xl);
+}
+
+.home-view__timeline-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.home-view__timeline-heading h2 {
+  margin: 0;
+  font: 400 1.5rem var(--font-serif);
+}
+
+.home-view__timeline-heading p,
+.home-view__timeline-heading > span,
+.home-view__stop-main p {
+  margin: var(--spacing-xs) 0 0;
+  color: var(--theme-neutral-700);
+  font-size: var(--font-size-sm);
+}
+
+.home-view__timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.home-view__stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+}
+
+.home-view__stop:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 1.35rem;
+  top: 2.75rem;
+  bottom: 0;
+  border-left: 1px dashed var(--theme-neutral-300);
+}
+
+.home-view__marker {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--theme-neutral-300);
+  border-radius: 50%;
+  font-family: var(--font-serif);
+}
+
+.home-view__stop-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--theme-neutral-200);
+  border-radius: 10px;
+  background: var(--theme-neutral-50);
+}
+
+.home-view__stop-main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  min-width: 0;
+}
+
+.home-view__stop-main h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font: 400 1.25rem var(--font-serif);
+}
+
+.home-view__deck-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 8px;
+  background: var(--theme-neutral-200);
+  font-family: var(--font-serif);
+}
+
+.home-view__fork-credit {
+  color: var(--theme-neutral-700);
+  font-size: var(--font-size-sm);
+}
+
 @media (max-width: 36rem) {
   .home-view__welcome-section {
     padding: var(--spacing-2xl);
@@ -50,5 +148,10 @@
 
   .home-view__welcome-subtitle {
     font-size: var(--font-size-md);
+  }
+
+  .home-view__stop-card {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

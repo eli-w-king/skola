@@ -34,6 +34,17 @@
   max-width: var(--content-width);
 }
 
+.learn-view__card-container--inline-ratings {
+  justify-content: flex-start;
+  min-height: 0;
+  overflow: auto;
+  padding-bottom: calc(var(--spacing-md) + var(--safe-area-bottom, 0px));
+}
+
+.learn-view__card-container--inline-ratings > .learn-view__card-stack {
+  margin-block: auto;
+}
+
 .learn-view__card {
   position: relative;
   transition: height 0.2s ease;
@@ -50,6 +61,15 @@
 
 .learn-view__card img {
   max-width: 100%;
+}
+
+.learn-view__listen {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
 }
 
 .learn-view__footer-container {

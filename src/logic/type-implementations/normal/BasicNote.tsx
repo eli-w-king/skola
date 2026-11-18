@@ -50,11 +50,15 @@ export const BasicNoteTypeAdapter: NoteTypeAdapter<NoteType.Basic> = {
     });
   },
 
+  getStudySpeechHtml(_, content, showingAnswer) {
+    return basicStudyFace(content, showingAnswer);
+  },
+
   displayQuestion(
     _: Card<NoteType.Basic>,
     content?: NoteContent<NoteType.Basic>
   ) {
-    return <QuestionOnly html={content?.front ?? ""} />;
+    return <QuestionOnly html={basicStudyFace(content, false) ?? ""} />;
   },
 
   displayAnswer(
@@ -63,8 +67,8 @@ export const BasicNoteTypeAdapter: NoteTypeAdapter<NoteType.Basic> = {
   ) {
     return (
       <QuestionWithAnswer
-        questionHtml={content?.front ?? ""}
-        answerHtml={content?.back ?? ""}
+        questionHtml={basicStudyFace(content, false) ?? ""}
+        answerHtml={basicStudyFace(content, true) ?? ""}
       />
     );
   },
@@ -110,3 +114,10 @@ export const BasicNoteTypeAdapter: NoteTypeAdapter<NoteType.Basic> = {
     deleteCard(card);
   },
 };
+
+function basicStudyFace(
+  content: NoteContent<NoteType.Basic> | undefined,
+  showingAnswer: boolean
+) {
+  return showingAnswer ? content?.back : content?.front;
+}

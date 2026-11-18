@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button";
+import { forkSource } from "@/lib/forkSource";
 import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 import "./WelcomeView.css";
 
@@ -106,8 +107,16 @@ export default function WelcomeView() {
         </section>
 
         <footer className={`${BASE}__footer`}>
+          <p className={`${BASE}__footer-text`}>
+            My fork of Skola, modified by Eli King on Nov 18, 2026. Not official
+            Skola. <a href={forkSource}>Source for this fork</a>
+          </p>
           <div className={`${BASE}__footer-branding`}>
-            <img src="/logo.svg" alt="" className={`${BASE}__footer-logo`} />
+            <img
+              src={`${import.meta.env.BASE_URL}logo.svg`}
+              alt=""
+              className={`${BASE}__footer-logo`}
+            />
             <span className={`${BASE}__footer-name`}>Skola</span>
           </div>
           <p className={`${BASE}__footer-text`}>

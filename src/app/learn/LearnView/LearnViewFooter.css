@@ -18,8 +18,40 @@
   gap: var(--spacing-md);
 }
 
+.learn-view-footer--inline {
+  margin-block: var(--spacing-md);
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+.learn-view-footer--inline .answer-card-button {
+  height: auto;
+  min-height: 2.75rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 768px) {
   .learn-view-footer__buttons {
     gap: var(--spacing-sm);
+  }
+
+  @media (max-width: 28rem) {
+    .learn-view-footer--inline .learn-view-footer__buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .learn-view-footer--inline .answer-card-button {
+      transition: none;
+    }
+
+    .learn-view-footer--inline .answer-card-button:active {
+      transform: none;
+    }
   }
 }
